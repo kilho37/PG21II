@@ -1,0 +1,250 @@
+<div data-page="mylist" class="page">
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a></div>
+      <div class="center">조회하기</div>
+      <div class="right"></div>
+    </div>
+  </div>
+  <div class="toolbar toolbar-bottom">
+    <div class="toolbar-inner">
+      <a href="#" class="link" style="width: 100px;">이전</a>
+      <div id="my-list-paging-info"></div>
+      <a href="#" class="link" style="width: 100px;">다음</a>
+    </div>
+  </div>
+  <!-- Search Bar -->
+  <form class="searchbar">
+    <div class="searchbar-input">
+      <input type="hidden" name="in_start_dttm">
+      <input type="hidden" name="in_end_dttm">
+      <input type="text" class="search-range-datepicker" readonly>
+    </div>
+  </form>
+  <!-- Search Bar overlay-->
+  <div class="searchbar-overlay"></div>
+  <!-- Pull To Refresh -->
+  <div class="page-content pull-to-refresh-content" data-ptr-distance="44">
+    <div class="pull-to-refresh-layer">
+      <div class="preloader"></div>
+      <div class="pull-to-refresh-arrow"></div>
+    </div>
+    <div class="page-mylist-template-content" style="height: 100%;">
+      <!-- 내용 -->
+    </div>
+  </div>
+  <!-- mylist.html -->
+  <script type="text/template7" id="my-list-template">
+  	<div class="list-block media-list" style="margin: 0px;">
+      <ul>
+        {{#each this}}
+        <li>
+          <a href="#" class="item-content item-link" data-rnum="{{f_num}}">
+            <div class="item-media"><!--{{f_site_type_func_name}}--><br/>{{defaultString f_status}}</div>
+            <div class="item-inner">
+              <div class="item-title-row">
+                <div class="item-title">{{formatDateTime f_receive_dttm}}</div>
+                <div class="item-after">{{defaultString f_car_type}} / {{formatCommas f_fare_total}} 원</div>
+              </div>
+              <div class="item-text" style="max-height: none;">
+                <div>출발지 : {{defaultString f_start_dong}} {{#if f_start_name}}/ {{defaultString f_start_name}}{{/if}}</div>
+                <div>도착지 : {{defaultString f_end_dong}} {{#if f_end_name}}/ {{defaultString f_end_name}}{{/if}}</div>
+              </div>
+            </div>
+          </a>
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+  </script>
+  <script type="text/template7" id="my-list-not-found-template">
+    <div class="display-table">
+      <div class="display-vcenter">
+        <span class="font-size-16">해당 조회내역이 없습니다.</span>
+      </div>
+    </div>
+  </script>
+  <script type="text/template7" id="my-detail-template">
+    <div class="my-order-num" data-rnum="{{f_num}}"></div>
+    <div class="list-block" style="margin: 0px;">
+      <div class="list-group"><!--배송정보-->
+        <ul>
+          <li class="list-group-title">배송정보</li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">배송업무구분</div>
+              <div class="item-detail">{{defaultString f_site_type_func_name}}</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">접수일자</div>
+              <div class="item-detail">{{formatDateTime f_receive_dttm}}</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">상태</div>
+              <div class="item-detail">{{defaultString f_status}}</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">차량 및 운행</div>
+              <div class="item-detail">{{defaultString f_car_type}} / {{defaultString f_shuttle_type}}</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="list-group"><!--요금정보-->
+        <ul>
+          <li class="list-group-title">요금정보</li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">결제</div>
+              <div class="item-detail">{{defaultString f_pay_type}}</div>
+            </div>
+          </li>
+          {{if f_fare_consign}}
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">탁송료</div>
+              <div class="item-detail">{{formatCommas f_fare_consign}} 원</div>
+            </div>
+          </li>
+          {{/if}}
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">합계금액</div>
+              <div class="item-detail">{{formatCommas f_fare_total}} 원</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="list-group"><!--출발지-->
+        <ul>
+          <li class="list-group-title">출발지</li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">회사명</div>
+              <div class="item-detail">{{defaultString START.f_cust_name}}</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">전화번호</div>
+              <div class="item-detail">{{defaultString START.f_tel}}</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">출발지</div>
+              <div class="item-detail">{{formatFullAddress START}}</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">픽업지</div>
+              <div class="item-detail">{{defaultString START.f_pickup_place}}</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">상세위치</div>
+              <div class="item-detail">{{defaultString START.f_addr_detail}}</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      {{#if this.END}}
+      <div class="list-group"><!--도착지-->
+        <ul>
+          <li class="list-group-title">도착지</li>      
+                    <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">회사명</div>
+              <div class="item-detail">{{defaultString END.f_cust_name}}</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">전화번호</div>
+              <div class="item-detail">{{defaultString END.f_tel}}</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">출발지</div>
+              <div class="item-detail">{{formatFullAddress END}}</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">상세위치</div>
+              <div class="item-detail">{{defaultString END.f_addr_detail}}</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      {{/if}}
+      {{#if this.PASS}}
+      <div class="list-group"><!--경유지-->
+        <ul>
+          <li class="list-group-title">경유지</li>
+          {{#each this.PASS}}
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">회사명</div>
+              <div class="item-detail">{{defaultString PASS.f_cust_name}}</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">주소</div>
+              <div class="item-detail">{{formatFullAddress PASS}}</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">상세위치</div>
+              <div class="item-detail">{{defaultString PASS.f_addr_detail}}</div>
+            </div>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+      {{/if}}
+      {{#if f_driver_num}}
+      <div class="list-group"><!--기사정보-->
+        <ul>
+          <li class="list-group-title">기사정보</li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">기사번호</div>
+              <div class="item-detail">{{defaultString f_driver_num}}</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">기사명</div>
+              <div class="item-detail">{{defaultString f_driver_name}}</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">휴대전화</div>
+              <div class="item-detail">{{defaultString f_driver_hphone}}</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">메모</div>
+              <div class="item-detail">{{defaultString f_memo}}</div>
+            </div>
+          </li>
+          {{/if}}
+        </ul>
+      </div>
+    </div>
+  </script>
+</div>

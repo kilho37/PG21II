@@ -1,0 +1,251 @@
+<div data-page="myinfo" class="page toolbar-fixed">
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a></div>
+      <div class="center">내정보</div>
+      <div class="right"></div>
+    </div>
+  </div>
+  <div class="toolbar toolbar-bottom">
+    <div class="toolbar-inner">
+      <a href="#" class="link">다시작성</a>
+      <a href="#" class="link">취소</a>
+      <a href="#" class="link">확인</a>
+    </div>
+  </div>
+  <div class="page-content">
+    <div class="page-myinfo-template-content">
+      <!-- 내용 -->
+    </div>
+  </div>
+  <!-- myinfo.html -->
+  <script type="text/template7" id="my-info-template">
+		<div class="list-block inputs-list" style="margin: 0px;">
+      <div class="list-group"><!--계정정보-->
+        <ul>
+          <li class="list-group-title">계정정보</li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">아이디</div>
+                <div class="item-input item-input-field">
+                  <input type="text" name="custid" placeholder="예) user@lsplus.co.kr" data-value="{{f_id}}" value="{{f_id}}" readonly="readonly">
+                  <a href="#" class="button button-raised button-fill color-amber" style="display: none; float: right;margin-top: -36px; height: 34px; color: rgba(0,0,0,.54); font-size: 16px;" id="custidused">중복확인</a>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">비밀번호</div>
+                <div class="item-input item-input-field">
+                  <input type="password" name="custpw" placeholder="4자 이상">
+                </div>
+              </div>
+            </div>
+          </li>
+          <!--<li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">비밀번호 확인</div>
+                <div class="item-input item-input-field">
+                  <input type="password" name="custpw_confirm">
+                </div>
+              </div>
+            </div>
+          </li>-->
+        </ul>
+      </div>
+      <div class="list-group"><!--사용자정보-->
+        <ul>
+          <li class="list-group-title">사용자정보</li>
+          <li style="display: none;"><!-- 안보이게 처리 -->
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">회사용도</div>
+                <div class="item-input">
+                  <label class="label-switch">
+                    <input type="checkbox" name="custfor_group" checked="checked">
+                    <div class="checkbox"></div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content"><!--autocomplete-opener-->
+              <div class="item-inner">
+                <div class="item-title label">고객명</div><!--회사(이름검색)-->
+                <div class="item-input item-input-field">
+                  <input type="hidden" name="custgroup_num" data-value="{{f_cust_group_num}}" value="{{f_cust_group_num}}">
+                  <input type="text" name="custname" data-value="{{f_name}}" value="{{f_name}}"><!--readonly="readonly"-->
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">부서명</div>
+                <div class="item-input item-input-field">
+                  <input type="text" name="custdepart_name" data-value="{{f_depart_name}}" value="{{f_depart_name}}">
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">담당자</div>
+                <div class="item-input item-input-field">
+                  <input type="text" name="custperson_name" data-value="{{f_person_name}}" value="{{f_person_name}}">
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">전화번호</div>
+                <div class="item-input item-input-field">
+                  <input type="text" name="custtel" data-value="{{f_tel}}" value="{{f_tel}}">
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">내선번호</div>
+                <div class="item-input item-input-field">
+                  <input type="text" name="custtel_in" data-value="{{f_tel_in}}" value="{{f_tel_in}}">
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">팩스번호</div>
+                <div class="item-input item-input-field">
+                  <input type="text" name="custfax" data-value="{{f_fax}}" value="{{f_fax}}">
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">휴대폰</div>
+                <div class="item-input item-input-field">
+                  <input type="text" name="custhphone" data-value="{{f_hphone}}" value="{{f_hphone}}">
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">결제구분</div>
+                <div class="item-input item-input-field">
+                  <input type="text" name="custcredit_name" data-value="{{f_credit_name}}" value="{{f_credit_name}}" readonly="readonly">
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">이메일</div>
+                <div class="item-input item-input-field">
+                  <input type="text" name="custemail" data-value="{{f_email}}" value="{{f_email}}">
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content autocomplete-opener">
+              <div class="item-inner">
+                <div class="item-title label">주소(동검색)</div>
+                <div class="item-input item-input-field">
+                  <input type="hidden" name="custsido" data-value="{{f_sido}}" value="{{f_sido}}">
+                  <input type="hidden" name="custgugun" data-value="{{f_gugun}}" value="{{f_gugun}}">
+                  <input type="hidden" name="custdong" data-value="{{f_dong}}" value="{{f_dong}}">
+                  <input type="text" name="custfull_addr" data-value="{{f_full_addr}}" value="{{f_full_addr}}" readonly="readonly">
+                  <input type="hidden" name="custlati" data-value="{{f_lati}}" value="{{f_lati}}">
+                  <input type="hidden" name="custlongi" data-value="{{f_longi}}" value="{{f_longi}}">
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">주소번지</div>
+                <div class="item-input item-input-field">
+                  <input type="text" name="custdong_num" data-value="{{f_dong_num}}" value="{{f_dong_num}}">
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">픽업지</div>
+                <div class="item-input item-input-field">
+                  <input type="text" name="custpickup_place" data-value="{{f_pickup_place}}" value="{{f_pickup_place}}">
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">고객번호</div>
+                <div class="item-input item-input-field">
+                  <input type="text" name="custnum" data-value="{{f_num}}" value="{{f_num}}" readonly="readonly">
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="list-group"><!--은행계좌정보-->
+        <ul>
+          <li class="list-group-title">은행계좌정보</li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">은행명</div>
+                <div class="item-input item-input-field">
+                  <input type="text" name="custbank_code" data-value="{{f_bank_code}}" value="{{f_bank_code}}">
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">계좌번호</div>
+                <div class="item-input item-input-field">
+                  <input type="text" name="custaccount_num" data-value="{{f_account_num}}" value="{{f_account_num}}">
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">예금주</div>
+                <div class="item-input item-input-field">
+                  <input type="text" name="custaccount_name" data-value="{{f_account_name}}" value="{{f_account_name}}">
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </script>
+</div>
