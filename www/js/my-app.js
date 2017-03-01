@@ -305,6 +305,14 @@ myApp.onPageBeforeInit('myorder', function(page) {
                 Template7.compile($$('script[id="my-order-' + i + '-template"]').html());
         }
     }
+    // 보내기/찾아오기/타지역 설정
+    $$('.panel.panel-right .list-block li').each(function() {
+        var el = $$(this);
+        el.find('.item-after').remove();
+        if(el.index() === 0) {
+            el.find('.item-inner').append('<div class="item-after"><span class="badge">선택</span></div>');
+        }
+    });
     // 탭 설정
     var tabbar = $$('[data-page="myorder"] .toolbar.tabbar .toolbar-inner');
     var tabs = $$('[data-page="myorder"] .page-content .tabs-swipeable-wrap .tabs');
