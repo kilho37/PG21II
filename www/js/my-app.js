@@ -209,6 +209,14 @@ Template7.registerHelper('ifNull', function(value1, value2, options) {
     }
     return defaultString(value1);
 });
+Template7.registerHelper('ifContact', function(value1, value2, options) {
+    value1 = defaultString(value1).trim();
+    value2 = defaultString(value2).trim();
+    if(value1 == value2 || value1.length > value2.length) {
+        return value1;
+    }
+    return value2;
+});
 Template7.registerHelper('ifOdd', function(value, options) {
     if(value % 2) {
         return options.fn(this, options.data);
@@ -222,6 +230,15 @@ Template7.registerHelper('ifEqual', function(value1, value2, options) {
     } else {
         return options.inverse(this, options.data);
     }
+});
+Template7.registerHelper('formatStatus', function(status, options) {
+    var color = CUST_INFO.formatStatusColors[
+        status == '대기' ? 0 : 
+        status == '접수' ? 1 : 
+        status == '취소' ? 2 : 
+        status == '종료' ? 3 : 0 
+    ];
+    return '<p style="color: ' + color + ';">' + status + '</p>'
 });
 
 // actions events
@@ -1757,10 +1774,8 @@ $$(document).on('click', '[data-page="login"] a[id="custlog"]', function() {
         window.localStorage.setItem(CUST_INFO.itemKey, JSON.stringify(CUST_INFO.itemData));
         window.localStorage.setItem(CUST_INFO.itemAutoLoggedIn, JSON.stringify(CUST_INFO.autoLoggedIn));
         // panel-left
-        myApp.alert(4)
         onMenuChangePanelLeft(true);
         // back
-        myApp.alert(5)
         mainView.router.back({url: 'index.html', force: true});
     });
 });
@@ -1926,7 +1941,9 @@ var CUST_INFO = { // 고객정보
     callcenterNumber: '18008280',
     // debounceTime: ms, Params
     debounceTime: 500,
-    debounceParams: {}
+    debounceParams: {},
+    // status color format
+    formatStatusColors: [$$('meta[name="theme-color"]').attr('content'), 'blue', 'gray', 'black'] // 대기, 접수, 취소, 종료
 }
 
 var DONG_INFO = { // 주소캐쉬
@@ -2318,20 +2335,18 @@ function getJSON(url, params, successCallback, errorCallback) {
         });
         axios.request(config)
             .then(function(response) {
-    myApp.alert(response);
                 myApp.hideIndicator();
                 if(isObject(response.data) && response.data.resultCode != CUST_INFO.resultOK) {
                     if(!CUST_INFO.init) myApp.alert(response.data.resultMsg); // error message
-                    if(typeof errorCallback === 'function') errorCallback(error);
+                    if(typeof errorCallback === 'function') errorCallback(response.data.data);
                 } else if(typeof successCallback === 'function') successCallback(response.data.data, response.data.params);
             })
             .catch(function(error) {
-    myApp.alert('3, '+  error);
+                console.log(error);
                 myApp.hideIndicator();
                 if(typeof errorCallback === 'function') errorCallback(error);
                 else {
                     // myApp.alert(error);
-                    console.log(error);
                 }
             });
     }, 250);

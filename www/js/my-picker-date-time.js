@@ -12,7 +12,7 @@ function getDateTimePicker(params) {
             isArray(params.minInterval) ? params.minInterval[0] : (today.getMinutes() < 10 ? '0' + today.getMinutes() : today.getMinutes())
         ],
         onChange: function(p, values, displayValues) {
-            var daysInMonth = new Date(p.value[2], p.value[0]*1 + 1, 0).getDate();
+            var daysInMonth = new Date(p.value[2], p.value[0] * 1 + 1, 0).getDate();
             if (values[1] > daysInMonth) {
                 p.cols[1].setValue(daysInMonth);
             }
@@ -24,8 +24,9 @@ function getDateTimePicker(params) {
             //
         },
         formatValue: function(p, values, displayValues) {
-            var month = ['01','02','03','04','05','06','07','08','09','10','11','12'][values[1]];
-            return values[0] + '-' + month + '-' +  values[2] + ' ' + values[3] + ':' + values[4];
+            var month = (displayValues[1] < 10 ? '0' : '') + displayValues[1];
+            var day = (values[2] < 10 ? '0' : '') + values[2];
+            return values[0] + '-' + month + '-' +  day + ' ' + values[3] + ':' + values[4];
         },
         cols: [
             // Years
@@ -36,16 +37,16 @@ function getDateTimePicker(params) {
                     var arr = [];
                     for (var i = year - range; i <= year + range; i++) { arr.push(i); }
                     return arr;
-                })(),
+                })()
             },
             // Months
             {
                 values: [0,1,2,3,4,5,6,7,8,9,10,11],
-                displayValues: ['01','02','03','04','05','06','07','08','09','10','11','12']
+                displayValues: [1,2,3,4,5,6,7,8,9,10,11,12]
             },
             // Days
             {
-                values: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
+                values: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
             },
             // Space divider
             {
@@ -58,7 +59,7 @@ function getDateTimePicker(params) {
                     var arr = [];
                     for (var i = 0; i <= 23; i++) { arr.push(i); }
                     return arr;
-                })(),
+                })()
             },
             // Divider
             {
@@ -71,7 +72,7 @@ function getDateTimePicker(params) {
                     var arr = [];
                     for (var i = 0; i <= 59; i++) { arr.push(i < 10 ? '0' + i : i); }
                     return arr;
-                })(),
+                })()
             }
         ]
     });
