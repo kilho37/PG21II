@@ -48,11 +48,11 @@
             <div class="item-inner">
               <div class="item-title-row">
                 <div class="item-title">{{defaultString f_name}}</div>
-              </div>
-              <div class="item-text" style="max-height: none;">
-                <div>{{#if f_depart_name}}{{defaultString f_depart_name}} {{/if}}{{defaultString f_person_name}}{{#if f_position}} {{defaultString f_position}}{{/if}}</div>
-                <div>{{ifContact f_tel f_hphone}}</div>
-                <div>{{formatFullAddress this}}</div>
+                <div class="item-text" style="max-height: none;">
+                  <div>{{#if f_depart_name}}{{defaultString f_depart_name}} {{/if}}{{defaultString f_person_name}}{{#if f_position}} {{defaultString f_position}}{{/if}}</div>
+                  <div>{{ifContact f_tel f_hphone}}</div>
+                  <div>{{formatFullAddress this}}</div>
+                </div>
               </div>
             </div>
           </a>
