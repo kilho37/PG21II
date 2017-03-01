@@ -3,6 +3,16 @@
     height: auto;
 }
 
+.menu {
+  width: 100%;
+  height: 100%;
+  background-color: #e91e63;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border: 2px solid #fff;
+}
+
 span.menu-title {
     color: black;
     font-weight: bold;
@@ -76,7 +86,7 @@ span.menu-title {
   font-family: inherit;
   font-size: 16px;
   font-weight: 400;
-  text-align: center;
+  /*text-align: center;*/
   padding: 0;
   border-bottom: 1px solid #fff;
   height: 100%;
@@ -98,3 +108,41 @@ span.menu-title {
 .font-size-20 { font-size: 20px; }
 .font-size-24 { font-size: 24px; }
 .font-size-28 { font-size: 28px; }
+
+/* http://google.github.io/material-design-icons/ */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+       local('MaterialIcons-Regular'),
+       url(../fonts/MaterialIcons-Regular.woff2) format('woff2'),
+       url(../fonts/MaterialIcons-Regular.woff) format('woff'),
+       url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
