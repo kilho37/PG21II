@@ -2305,6 +2305,7 @@ function getJSON(url, params, successCallback, errorCallback) {
         if(typeof errorCallback === 'function') errorCallback();
         return false;
     }
+    myApp.alert(1);
     setTimeout(function() {
         var config = Object.assign({}, {
             url: CUST_INFO.baseURL + url + CUST_INFO.baseSuffix,
@@ -2316,6 +2317,7 @@ function getJSON(url, params, successCallback, errorCallback) {
         });
         axios.request(config)
             .then(function(response) {
+    myApp.alert(response.data.data);
                 myApp.hideIndicator();
                 if(isObject(response.data) && response.data.resultCode != CUST_INFO.resultOK) {
                     if(!CUST_INFO.init) myApp.alert(response.data.resultMsg); // error message
@@ -2323,6 +2325,7 @@ function getJSON(url, params, successCallback, errorCallback) {
                 } else if(typeof successCallback === 'function') successCallback(response.data.data, response.data.params);
             })
             .catch(function(error) {
+    myApp.alert(error);
                 myApp.hideIndicator();
                 if(typeof errorCallback === 'function') errorCallback(error);
                 else {
