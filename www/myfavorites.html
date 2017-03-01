@@ -43,21 +43,22 @@
   	<div class="list-block" style="margin: 0px;">
       <ul>
         {{#each this}}
-        <li>
-          <a href="#" class="item-content item-link" data-rnum="{{f_num}}">
+        <li class="swipeout">
+          <a href="#" class="swipeout-content item-content item-link" data-rnum="{{f_num}}">
             <div class="item-inner">
               <div class="item-title-row">
                 <div class="item-title">{{defaultString f_name}}</div>
-                <div class="item-text" style="max-height: none;">
-                  <div>{{defaultString f_person_name}}{{#if f_position}} {{defaultString f_position}}{{/if}}</div>
-                  <div>{{ifNull f_tel f_hphone}}</div>
-                  <!--<div>{{defaultString f_contact}}</div>-->
-                  <div>{{formatFullAddress this}}</div>
-                  <!--<div>{{defaultString f_full_addr}}</div>-->
-                </div>
+              </div>
+              <div class="item-text" style="max-height: none;">
+                <div>{{#if f_depart_name}}{{defaultString f_depart_name}} {{/if}}{{defaultString f_person_name}}{{#if f_position}} {{defaultString f_position}}{{/if}}</div>
+                <div>{{ifContact f_tel f_hphone}}</div>
+                <div>{{formatFullAddress this}}</div>
               </div>
             </div>
           </a>
+          <div class="swipeout-actions-right">
+            <a href="#" id="custfav_delete" data-rnum="{{f_num}}"><i class="material-icons">delete_forever</i></a>
+          </div>
         </li>
         {{/each}}
       </ul>
