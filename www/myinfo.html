@@ -1,7 +1,7 @@
 <div data-page="myinfo" class="page toolbar-fixed">
   <div class="navbar">
     <div class="navbar-inner">
-      <div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a></div>
+      <div class="left"><a href="index.html" class="back link icon-only"><i class="material-icons">keyboard_backspace</i></a></div>
       <div class="center">내정보</div>
       <div class="right"></div>
     </div>
@@ -30,7 +30,10 @@
                 <div class="item-title label">아이디</div>
                 <div class="item-input item-input-field">
                   <input type="text" name="custid" placeholder="예) user@lsplus.co.kr" data-value="{{f_id}}" value="{{f_id}}" readonly="readonly">
-                  <a href="#" class="button button-raised button-fill color-amber" style="display: none; float: right;margin-top: -36px; height: 34px; color: rgba(0,0,0,.54); font-size: 16px;" id="custidused">중복확인</a>
+                  <!--<a href="#" class="button button-raised button-fill color-amber" style="display: none; float: right; margin-top: -36px; height: 34px; color: rgba(0,0,0,.54); font-size: 16px;" id="custidused">중복확인</a>-->
+                  <a href="#" class="button button-fill" style="float: right; margin-top: -36px; height: 33px; min-width: 48px;" id="custidused">
+                    <i class="material-icons" style="margin-top: 5px;">cloud_done</i>
+                  </a>
                 </div>
               </div>
             </div>
@@ -100,6 +103,16 @@
                 <div class="item-title label">담당자</div>
                 <div class="item-input item-input-field">
                   <input type="text" name="custperson_name" data-value="{{f_person_name}}" value="{{f_person_name}}">
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">직위명</div>
+                <div class="item-input item-input-field">
+                  <input type="text" name="custposition" data-value="{{f_position}}" value="{{f_position}}">
                 </div>
               </div>
             </div>

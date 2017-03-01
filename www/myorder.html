@@ -1,9 +1,14 @@
 <div data-page="myorder" class="page toolbar-fixed">
   <div class="navbar">
     <div class="navbar-inner">
-      <div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a></div>
+      <div class="left"><a href="index.html" class="back link icon-only"><i class="material-icons">keyboard_backspace</i></a></div>
       <div class="center">주문하기</div>
-      <div class="right"></div>
+      <div class="right">
+        <a href="#" data-panel="right" class="open-panel link">
+          <span>보내기</span>
+          <i class="material-icons">directions</i>
+        </a>
+      </div>
     </div>
   </div>
   <div class="toolbar tabbar">
@@ -32,7 +37,7 @@
           <li>
             {{#ifEqual f_code '우편'}}
             <a href="#" class="item-link smart-select" data-open-in="picker" data-back-on-select="true" data-code="{{f_code}}">
-              <select name="custtab0_doc_subal_gbn_sub" class="not-empty-state item-required" onchange="javascript:onChangeDocSubalGbnSub(this);">
+              <select name="custtab0_doc_subal_gbn_sub" class="not-empty-state" onchange="javascript:onChangeDocSubalGbnSub(this);">
                 <option value="일반우편" selected="selected">일반우편</option>
                 <option value="빠른등기(익일특급)">빠른등기(익일특급)</option>
                 <option value="익일오전특급">익일오전특급</option>
@@ -70,15 +75,10 @@
       </div>
     </div>
     <input type="hidden" name="custtab0_doc_subal_gbn">
-    <input type="hidden" name="custtab0_doc_subal_func">
   </script>
   <script type="text/template7" id="my-order-1-template">
     <div class="content-block-title">출발지 정보를 입력하세요.</div>
     <div class="card">
-      <p class="buttons-row" style="display: none; padding: 5px;">
-        <a href="#" class="button button-raised button-fill color-amber" style="color: rgba(0,0,0,.54); font-size: 16px;" id="custtab1_favorite">내 거래처 찾기</a>
-        <a href="#" class="button button-raised button-fill color-amber" style="color: rgba(0,0,0,.54); font-size: 16px; margin-left: 5px;" id="custtab1_addfavor">내 거래처 등록</a>
-      </p>
       <div class="list-block inputs-list">
         <ul>
           <li>
@@ -87,6 +87,12 @@
                 <div class="item-title label">고객명</div>
                 <div class="item-input item-input-field">
                   <input type="text" name="custtab1_name" value="{{f_name}}" class="item-required">
+                  <a href="#" class="button button-fill" style="float: right; margin-right: 53px; margin-top: -36px; height: 33px; min-width: 48px;" id="custtab1_favorite">
+                    <i class="material-icons" style="margin-top: 5px;">perm_contact_calendar</i>
+                  </a>
+                  <a href="#" class="button button-fill" style="float: right; margin-top: -36px; height: 33px; min-width: 48px;" id="custtab1_favnew">
+                    <i class="material-icons" style="margin-top: 5px;">local_hospital</i>
+                  </a>
                 </div>
               </div>
             </div>
@@ -193,10 +199,6 @@
   <script type="text/template7" id="my-order-2-template">
     <div class="content-block-title">도착지 정보를 입력하세요.</div>
     <div class="card">
-      <p class="buttons-row" style="display: none; padding: 5px;">
-        <a href="#" class="button button-raised button-fill color-amber" style="color: rgba(0,0,0,.54); font-size: 16px;" id="custtab2_favorite">내 거래처 찾기</a>
-        <a href="#" class="button button-raised button-fill color-amber" style="color: rgba(0,0,0,.54); font-size: 16px; margin-left: 5px;" id="custtab2_addfavor">내 거래처 등록</a>
-      </p> 
       <div class="list-block inputs-list">
         <ul>
           <li>
@@ -205,6 +207,12 @@
                 <div class="item-title label">고객명</div>
                 <div class="item-input item-input-field">
                   <input type="text" name="custtab2_name" value="{{f_name}}" class="item-required">
+                  <a href="#" class="button button-fill" style="float: right; margin-right: 53px; margin-top: -36px; height: 33px; min-width: 48px;" id="custtab2_favorite">
+                    <i class="material-icons" style="margin-top: 5px;">perm_contact_calendar</i>
+                  </a>
+                  <a href="#" class="button button-fill" style="float: right; margin-top: -36px; height: 33px; min-width: 48px;" id="custtab2_favnew">
+                    <i class="material-icons" style="margin-top: 5px;">local_hospital</i>
+                  </a>
                 </div>
               </div>
             </div>

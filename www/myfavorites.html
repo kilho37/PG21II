@@ -1,0 +1,175 @@
+<div data-page="myfavorites" class="page">
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="left"><a href="index.html" class="back link icon-only"><i class="material-icons">keyboard_backspace</i></a></div>
+      <div class="center">내거래처</div>
+      <div class="right">
+        <a href="#" class="link" id="custfavnew">
+          <span>신규</span>
+          <i class="material-icons">note_add</i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="toolbar toolbar-bottom">
+    <div class="toolbar-inner">
+      <a href="#" class="link" style="width: 100px;">이전</a>
+      <div id="my-favorites-paging-info"></div>
+      <a href="#" class="link" style="width: 100px;">다음</a>
+    </div>
+  </div>
+  <!-- Search Bar -->
+  <!--<form class="searchbar">
+    <div class="searchbar-input">
+      <input type="hidden" name="in_start_dttm">
+      <input type="hidden" name="in_end_dttm">
+      <input type="text" class="search-range-datepicker" readonly>
+    </div>
+  </form>-->
+  <!-- Search Bar overlay -->
+  <!--<div class="searchbar-overlay"></div>-->
+  <!-- Pull To Refresh -->
+  <div class="page-content pull-to-refresh-content myfavorites-pull-content" data-ptr-distance="44">
+    <div class="pull-to-refresh-layer">
+      <div class="preloader"></div>
+      <div class="pull-to-refresh-arrow"></div>
+    </div>
+    <div class="page-myfavorites-template-content" style="height: 100%;">
+      <!-- 내용 -->
+    </div>
+  </div>
+  <!-- myfavorites.html -->
+  <script type="text/template7" id="my-favorites-template">
+  	<div class="list-block" style="margin: 0px;">
+      <ul>
+        {{#each this}}
+        <li>
+          <a href="#" class="item-content item-link" data-rnum="{{f_num}}">
+            <div class="item-inner">
+              <div class="item-title-row">
+                <div class="item-title">{{defaultString f_name}}</div>
+                <div class="item-text" style="max-height: none;">
+                  <div>{{defaultString f_person_name}}{{#if f_position}} {{defaultString f_position}}{{/if}}</div>
+                  <div>{{ifNull f_tel f_hphone}}</div>
+                  <!--<div>{{defaultString f_contact}}</div>-->
+                  <div>{{formatFullAddress this}}</div>
+                  <!--<div>{{defaultString f_full_addr}}</div>-->
+                </div>
+              </div>
+            </div>
+          </a>
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+  </script>
+  <script type="text/template7" id="my-favorites-not-found-template">
+    <div class="display-table">
+      <div class="display-vcenter">
+        <span class="font-size-16">해당 조회내역이 없습니다.</span>
+      </div>
+    </div>
+  </script>
+  <script type="text/template7" id="my-favorites-detail-template">
+    {{#if f_num}}<div class="my-favorite-num" data-rnum="{{f_num}}"></div>{{/if}}
+    <div class="list-block inputs-list" style="margin: 0px;">
+      <ul>
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">고객명</div>
+              <div class="item-input item-input-field">
+                <input type="text" name="custfavname" data-value="{{f_name}}" value="{{f_name}}">
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">부서명</div>
+              <div class="item-input item-input-field">
+                <input type="text" name="custfavdepart_name" data-value="{{f_depart_name}}" value="{{f_depart_name}}">
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">담당자</div>
+              <div class="item-input item-input-field">
+                <input type="text" name="custfavperson_name" data-value="{{f_person_name}}" value="{{f_person_name}}">
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">직위명</div>
+              <div class="item-input item-input-field">
+                <input type="text" name="custfavposition" data-value="{{f_position}}" value="{{f_position}}">
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">전화번호</div>
+              <div class="item-input item-input-field">
+                <input type="text" name="custfavtel" data-value="{{f_tel}}" value="{{f_tel}}">
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">휴대폰</div>
+              <div class="item-input item-input-field">
+                <input type="text" name="custfavhphone" data-value="{{f_hphone}}" value="{{f_hphone}}">
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="item-content autocomplete-opener">
+            <div class="item-inner">
+              <div class="item-title label">주소(동검색)</div>
+              <div class="item-input item-input-field">
+                <input type="hidden" name="custfavsido" data-value="{{f_sido}}" value="{{f_sido}}">
+                <input type="hidden" name="custfavgugun" data-value="{{f_gugun}}" value="{{f_gugun}}">
+                <input type="hidden" name="custfavdong" data-value="{{f_dong}}" value="{{f_dong}}">
+                <input type="text" name="custfavfull_addr" data-value="{{f_full_addr}}" value="{{f_full_addr}}" readonly="readonly">
+                <input type="hidden" name="custfavlati" data-value="{{f_lati}}" value="{{f_lati}}">
+                <input type="hidden" name="custfavlongi" data-value="{{f_longi}}" value="{{f_longi}}">
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">주소번지</div>
+              <div class="item-input item-input-field">
+                <input type="text" name="custfavdong_num" data-value="{{f_dong_num}}" value="{{f_dong_num}}">
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">픽업지</div>
+              <div class="item-input item-input-field">
+                <input type="text" name="custfavpickup_place" data-value="{{f_pickup_place}}" value="{{f_pickup_place}}">
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </script>
+</div>

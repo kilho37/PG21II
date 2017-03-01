@@ -6,6 +6,7 @@
     <meta http-equiv="Content-Security-Policy" content="img-src 'self' data:; default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,address=no,email=no"><!-- 자동전화걸기 자동링크방지 -->
     <title>LS+ Quick App</title>
     <meta name="theme-color" content="#e91e63"><!-- Color theme for statusbar : #607d8b, #2196f3 -->
     <link rel="stylesheet" href="css/framework7.material.min.css">
@@ -33,31 +34,38 @@
       <div class="content-block-title">기본메뉴</div>
       <div class="list-block">
         <ul>
-          <li>
+          <li style="display: none;">
+            <a href="myfavorites.html" name="myfavorites" class="item-content item-link close-panel">
+              <div class="item-inner">
+                <div class="item-title"><i class="material-icons" style="float: left; margin-right: 5px;">perm_contact_calendar</i>내거래처</div>
+              </div>
+            </a>
+          </li>
+          <li style="display: none;">
+            <a href="settings.html" name="settings" class="item-content item-link close-panel">
+              <div class="item-inner">
+                <div class="item-title"><i class="material-icons" style="float: left; margin-right: 5px;">settings_applications</i>설정</div>
+              </div>
+            </a>
+          </li>
+          <li style="display: none;">
             <a href="login.html" name="login" class="item-content item-link close-panel">
               <div class="item-inner">
-                <div class="item-title">로그인</div>
+                <div class="item-title"><i class="material-icons" style="float: left; margin-right: 5px;">account_box</i>로그인</div>
               </div>
             </a>
           </li>
           <li style="display: none;">
             <a href="#" name="logout" class="item-content item-link close-panel">
               <div class="item-inner">
-                <div class="item-title">로그아웃</div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="settings.html" class="item-content item-link close-panel">
-              <div class="item-inner">
-                <div class="item-title">설정</div>
+                <div class="item-title"><i class="material-icons" style="float: left; margin-right: 5px;">all_out</i>로그아웃</div>
               </div>
             </a>
           </li>
           <li>
             <a href="#" name="exitapp" class="item-content item-link close-panel">
               <div class="item-inner">
-                <div class="item-title">나가기</div>
+                <div class="item-title"><i class="material-icons" style="float: left; margin-right: 5px;">exit_to_app</i>나가기</div>
               </div>
             </a>
           </li>
@@ -68,6 +76,38 @@
         <ul id="contact-list"></ul>
       </div>
     </div>
+    <!-- Right Panel with Cover effect -->
+  <div class="panel panel-right panel-cover">
+    <div class="content-block">
+      <div class="content-block-title">출발/도착 기준을 선택하세요.</div>
+      <div class="list-block">
+        <ul>
+          <li>
+            <a href="#" class="item-content item-link close-panel">
+              <div class="item-inner">
+                <div class="item-title">보내기</div>
+                <div class="item-after"><span class="badge">선택</span></div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item-content item-link close-panel">
+              <div class="item-inner">
+                <div class="item-title">찾아오기</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item-content item-link close-panel">
+              <div class="item-inner">
+                <div class="item-title">타지역</div>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
     <!-- Views-->
     <div class="views">
       <div class="view view-main">
@@ -75,7 +115,7 @@
           <div data-page="index" class="page">
             <div class="navbar">
               <div class="navbar-inner">
-                <div class="left"><a href="#" class="open-panel link icon-only"><i class="icon icon-bars"></i></a></div>
+                <div class="left"><a href="#" class="open-panel link icon-only"><i class="material-icons">menu</i></a></div>
                 <div class="center">LS+ Quick App</div>
                 <div class="right">&nbsp;</div>
               </div>
@@ -86,7 +126,12 @@
                   <div class="display-table" style="margin-top: -32px;">
                     <div class="display-vcenter">
                       <!--<span style="width: 42px; height: 42px" class="preloader"></span>-->
-                      <p style="padding: 0px 25px;"><span class="progressbar-infinite"></span></p>
+                      <p style="padding: 0px 25px;">
+                        <div class="font-size-20" style="font-weight: bold; margin-bottom: 5px; margin-top: -32px;">
+                          상상 그 이상 PLUS<!--LS+ Quick App-->
+                        </div>
+                        <span class="progressbar-infinite"></span>
+                      </p>
                     </div>
                   </div>
                   <div style="display: none;">
@@ -167,6 +212,8 @@
     <div id="picker-inline-date-time-container" style="display: none;"></div>  
     <!-- modal -->
     <div class="modal-overlay"></div>
+    <!-- telephone -->
+    <div class="tel-overlay"></div>
     <!-- popup for mylist.html, todaylist.html, uselist.html -->
     <div class="popup popup-order-detail modal-in">
       <div class="view navbar-fixed">
@@ -174,12 +221,40 @@
           <div class="page">
             <div class="navbar">
               <div class="navbar-inner">
-                <div class="left"><a href="#" class="link icon-only close-popup"><i class="icon icon-back"></i></a></div>
+                <div class="left"><a href="#" class="link icon-only close-popup"><i class="material-icons">keyboard_backspace</i></a></div>
                 <div class="center">상세보기</div>
                 <!--<div class="right"><a href="#" class="link font-size-16" id="custmyreorder">배송신청</a></div>-->
               </div>
             </div>
-            <div class="page-content"></div>
+            <div class="page-content">
+              <!--<div class="page-order-template-content"></div>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- popup for myfavorites.html -->
+    <div class="popup popup-myfavorite-detail modal-in">
+      <div class="view navbar-fixed">
+        <div class="pages">
+          <div class="page">
+            <div class="navbar">
+              <div class="navbar-inner">
+                <div class="left"><a href="#" class="link icon-only close-popup"><i class="material-icons">keyboard_backspace</i></a></div>
+                <div class="center">내거래처 - 신규/상세보기</div>
+                <!--<div class="right"><a href="#" class="link font-size-16" id="custmyreorder">신규</a></div>-->
+              </div>
+            </div>
+            <div class="toolbar toolbar-bottom">
+              <div class="toolbar-inner">
+                <a href="#" class="link">다시작성</a>
+                <a href="#" class="link">취소</a>
+                <a href="#" class="link">확인</a>
+              </div>
+            </div>
+            <div class="page-content">
+              <!--<div class="page-myfavorite-template-content"></div>-->
+            </div>
           </div>
         </div>
       </div>
@@ -205,12 +280,15 @@
       };*/
     </script>
     <script type="text/javascript" src="cordova.js"></script>
+    <!--<script type="text/javascript" src="js/object-assign.min.js"></script>-->
+    <script type="text/javascript" src="js/polyfill.js"></script>
     <script type="text/javascript" src="js/es6-promise.auto.min.js"></script>
-    <script type="text/javascript" src="js/framework7.min.js"></script>
+    <script type="text/javascript" src="js/framework7.js"></script>
     <script type="text/javascript" src="js/axios.min.js"></script>
     <script type="text/javascript" src="js/async.min.js"></script>
     <script type="text/javascript" src="js/async-polling.min.js"></script>
-    <script type="text/javascript" src="js/bundle.min.js"></script>
+    <script type="text/javascript" src="js/my-picker-date-time.js"></script>
+    <script type="text/javascript" src="js/my-app.js"></script>
     <script type="text/javascript">
       app.initialize();
     </script>
