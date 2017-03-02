@@ -239,7 +239,8 @@
         </ul>
       </div>
       {{/if}}
-      {{#if f_driver_num}}
+      {{#ifSiteType this}}
+        {{#if f_driver_num}}
       <div class="list-group"><!--기사정보-->
         <ul>
           <li class="list-group-title">기사정보</li>
@@ -267,9 +268,10 @@
               <div class="item-detail">{{defaultString f_memo}}</div>
             </div>
           </li>
-          {{/if}}
         </ul>
       </div>
+        {{/if}}
+      {{/ifSiteType}}
     </div>
   </script>
 </div>
