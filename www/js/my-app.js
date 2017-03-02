@@ -1036,7 +1036,7 @@ function getMyList(params, pullToRefresh) {
             $$('[data-page="mylist"] div[id="my-list-paging-info"]').html('<span>' + params.in_page + ' / ' + params.in_total_pages + '</span>');
             // 버그? 높이 맞추기
             var pageEl = $$('[data-page="mylist"] .page-content');
-            pageEl.eq(1).css('height', pageEl.eq(0).height() + $$('[data-page="mylist"] .searchbar').height() + 'px');
+            pageEl.eq(1).css('height', pageEl.eq(0).height() - $$('[data-page="mylist"] .searchbar').height() + 'px');
             if(pullToRefresh) myApp.pullToRefreshDone();
         }, function() {
             PAGE_INFO.mylistPageData = [];
