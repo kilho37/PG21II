@@ -202,6 +202,13 @@ Template7.registerHelper('ifSiteType', function(context, options) {
         return options.inverse(this, options.data);
     }
 });
+Template7.registerHelper('ifSubal', function(context, options) {
+    if(context.f_site_type_gbn == 'BD') {
+        return options.fn(this, options.data);
+    } else {
+        return options.inverse(this, options.data);
+    }
+});
 // return value1 ? undefined/null/'' 이면 value2
 Template7.registerHelper('ifNull', function(value1, value2, options) {
     if(!value1) {
@@ -1797,8 +1804,10 @@ $$(document).on('click', '[data-page="login"] a[id="custlog"]', function() {
         window.localStorage.setItem(CUST_INFO.itemAutoLoggedIn, JSON.stringify(CUST_INFO.autoLoggedIn));
         // panel-left
         onMenuChangePanelLeft(true);
-        // back
-        mainView.router.back({url: 'index.html', force: true});
+        setTimeout(function() {
+            // back
+            mainView.router.back({url: 'index.html', force: true});
+        }, 250);
     });
 });
 
@@ -2641,23 +2650,22 @@ function appInitialize() {
             $$('[data-page="index"] .content-block').css('height', 'auto');
             $$('[data-page="index"] .page-index-template-content').css('height', 'auto');
             if(isObject(CUST_INFO.itemData) && CUST_INFO.autoLoggedIn) {
-                // mainView.router.back({url: 'index.html', force: true});
                 setMenuTemplate();
-            } else {
+            } else if(!isObject(CUST_INFO.itemData)) {
                 // 로그인이 안되어 있는 상태 즉, 초기 상태라면 아래를 보여주도록...,
-                if(!isObject(CUST_INFO.itemData)) {
-                    setMenuTemplate([{
-                        href: 'ifind.html',
-                        class: 'link',
-                        icon: 'icons/pages.png',
-                        title: '기존고객찾기'
-                    }, {
-                        href: 'login.html',
-                        class: 'link',
-                        icon: 'icons/pages.png',
-                        title: '로그인'
-                    }]);
-                }
+                setMenuTemplate([{
+                    href: 'ifind.html',
+                    class: 'link',
+                    icon: 'icons/pages.png',
+                    title: '기존고객찾기'
+                }, {
+                    href: 'login.html',
+                    class: 'link',
+                    icon: 'icons/pages.png',
+                    title: '로그인'
+                }]);
+            } else {
+                setMenuTemplate();
             }
             callback(null, 'menu success...,');
         }
