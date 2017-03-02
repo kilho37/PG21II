@@ -153,6 +153,10 @@ Template7.registerHelper('formatDateTime', function(value) {
     if(!value) return defaultString(value);
     return defaultString(value.slice(0, 4)) + '-' + defaultString(value.slice(4, 6)) + '-' + defaultString(value.slice(6, 8)) + ' ' + defaultString(value.slice(8, 10)) + ':' + defaultString(value.slice(10, 12));
 });
+Template7.registerHelper('formatDateLongTime', function(value) {
+    if(!value) return defaultString(value);
+    return defaultString(value.slice(0, 4)) + '-' + defaultString(value.slice(4, 6)) + '-' + defaultString(value.slice(6, 8)) + ' ' + defaultString(value.slice(8, 10)) + ':' + defaultString(value.slice(10, 12)) + ':' + defaultString(value.slice(12, 14));
+});
 Template7.registerHelper('formatCommas', function(value) {
     if(!value) return defaultString(value, '0');
     return defaultString((value + '').replace(/(\d)(?=(\d{3})+$)/g, '$1,'));
