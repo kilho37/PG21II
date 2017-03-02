@@ -43,7 +43,7 @@
             <div class="item-media"><!--{{f_site_type_func_name}}--><br/>{{formatStatus f_status}}</div>
             <div class="item-inner">
               <div class="item-title-row">
-                <div class="item-title">{{formatDateTime f_receive_dttm}}</div>
+                <div class="item-title">{{formatDateLongTime f_receive_dttm}}</div>
                 <div class="item-after">
                   {{#ifSiteType this}}
                     {{defaultString f_car_type}} / {{formatCommas f_fare_total}} 원
@@ -53,8 +53,8 @@
                 </div>
               </div>
               <div class="item-text" style="max-height: none;">
-                <div>출발지 : {{defaultString f_start_dong}} {{#if f_start_name}}/ {{defaultString f_start_name}}{{/if}}</div>
-                <div>도착지 : {{defaultString f_end_dong}} {{#if f_end_name}}/ {{defaultString f_end_name}}{{/if}}</div>
+                <div>출발지 : {{defaultString f_start_dong}}{{#if f_start_name}} / {{defaultString f_start_name}}{{/if}}</div>
+                <div>도착지 : {{defaultString f_end_dong}}{{#if f_end_name}} / {{defaultString f_end_name}}{{/if}}</div>
               </div>
             </div>
           </a>
@@ -90,7 +90,7 @@
           <li class="item-content">
             <div class="item-inner">
               <div class="item-title label">접수일자</div>
-              <div class="item-detail">{{formatDateTime f_receive_dttm}}</div>
+              <div class="item-detail">{{formatDateLongTime f_receive_dttm}}</div>
             </div>
           </li>
           {{#if f_reserve_dttm}}
