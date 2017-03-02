@@ -4,13 +4,35 @@ if(!('assign' in Object)) {
         for (var index = 1, key, src; index < arguments.length; ++index) {
             src = arguments[index];
             for (key in src) {
-                if (Object.prototype.hasOwnProperty.call(src, key)) {
+                if(Object.prototype.hasOwnProperty.call(src, key)) {
                 target[key] = src[key];
                 }
             }
         }
         return target;
     };
+}
+if(!Array.prototype.find) {
+  Array.prototype.find = function(predicate) {
+    if(this == null) {
+      throw new TypeError('Array.prototype.find called on null or undefined');
+    }
+    if(typeof predicate !== 'function') {
+      throw new TypeError('predicate must be a function');
+    }
+    var list = Object(this);
+    var length = list.length >>> 0;
+    var thisArg = arguments[1];
+    var value;
+
+    for (var i = 0; i < length; i++) {
+      value = list[i];
+      if(predicate.call(thisArg, value, i, list)) {
+        return value;
+      }
+    }
+    return undefined;
+  };
 }
 // https://gist.github.com/ottonascarella/c874af2d3419a350772eaf05ec438135
 Function.prototype.debounce = function(delay) {
@@ -30,7 +52,7 @@ Function.prototype.throttle = function(delay) {
 	var outter = this,
 		timer, control = false;
 	return function() {
-        if (control) return;
+        if(control) return;
         control = true;
 		var inner = this,
 			args = [].slice.apply(arguments);

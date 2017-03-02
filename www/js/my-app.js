@@ -2347,6 +2347,7 @@ function openOnAutoComplete(autocomplete) {
 }
 
 // 데이터 통신 (POST/JSON)
+var getJSONTimer;
 function getJSON(url, params, successCallback, errorCallback) {
     if(CUST_INFO.indicator) myApp.showIndicator();
     if(!CUST_INFO.networkLineStatus) { // 네트워크 연결상태가 바른지 확인
@@ -2355,8 +2356,10 @@ function getJSON(url, params, successCallback, errorCallback) {
         if(typeof errorCallback === 'function') errorCallback();
         return false;
     }
-    setTimeout(function() {
-        var config = Object.assign({}, {
+    clearTimeout(getJSONTimer);
+    getJSONTimer = setTimeout(function() {
+        // axios version
+        /*var config = Object.assign({}, {
             url: CUST_INFO.baseURL + url + CUST_INFO.baseSuffix,
             method: 'post',
             headers: {'X-Requested-With': 'XMLHttpRequest'},
@@ -2379,7 +2382,29 @@ function getJSON(url, params, successCallback, errorCallback) {
                 else {
                     // myApp.alert(error);
                 }
-            });
+            });*/
+        // Dom7 version
+        $$.ajax(Object.assign({}, {
+            url: CUST_INFO.baseURL + url + CUST_INFO.baseSuffix,
+            method: 'POST',
+            dataType: 'json',
+            data: params,
+            success: function(response, status, xhr) {
+                myApp.hideIndicator();
+                if(isObject(response) && response.resultCode != CUST_INFO.resultOK) {
+                    if(!CUST_INFO.init) myApp.alert(response.resultMsg); // error message
+                    if(typeof errorCallback === 'function') errorCallback(response.data);
+                } else if(typeof successCallback === 'function') successCallback(response.data, response.params);
+            }, 
+            error: function(xhr, status) {
+                myApp.hideIndicator();
+                if(typeof errorCallback === 'function') errorCallback(status);
+                else {
+                    // myApp.alert(status);
+                    console.log(status);
+                }
+            }
+        }));
     }, 250);
 }
 
