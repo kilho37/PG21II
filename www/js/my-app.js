@@ -296,6 +296,7 @@ myApp.onPageBeforeInit('myorder', function(page) {
     if(!isObject(PAGE_INFO.myorderPageTemplate)) {
         PAGE_INFO.myorderPageTemplate = {
             myOrderNeedTemplate: Template7.compile($$('script[id="my-order-need-template"]').html()), // 처리메세지
+            myOrderSubalTemplate: Template7.compile($$('script[id="my-order-subal-template"]').html()), // 문서수발 접수메세지
             myOrderPBarTemplate: Template7.compile($$('script[id="my-order-progressbar-template"]').html()), // 요금산정 60초
             myOrderTimeoutTemplate: Template7.compile($$('script[id="my-order-timeout-template"]').html()), // 시간초과
             myOrderToolbarTemplate: Template7.compile($$('script[id="my-order-toolbar-template"]').html()), // 이전|다음
@@ -762,24 +763,37 @@ $$(document).on('click', '[data-page="myorder"] a[id="custnew"]', function() {
         // input 비활성화
         $$('[data-page="myorder"] div#myorder-tab0 .list-block a').attr('disabled', 'disabled'); // 문서수발
         $$('[data-page="myorder"] input, [data-page="myorder"] select, [data-page="myorder"] textarea').prop('disabled', true); // 그외
+        // 보내기/찾아오기/타지역 비활성화
+        $$('[data-page="myorder"] .navbar .navbar-inner a[data-panel="right"]').removeClass('open-panel');
+        // 내거래처 숨김
+        $$('[data-page="myorder"] a[id="custtab1_favorite"]').css('display', 'none');
+        $$('[data-page="myorder"] a[id="custtab1_favnew"]').css('display', 'none');
+        $$('[data-page="myorder"] a[id="custtab2_favorite"]').css('display', 'none');
+        $$('[data-page="myorder"] a[id="custtab2_favnew"]').css('display', 'none');        
         // 접수/요금
         myApp.alert('의뢰하신 배송정보로 신청되었습니다.', function() {
             $$('[data-page="myorder"] a[id="custnew"]').parent().empty(); // 배송신청 버튼 DOM 삭제
-            var html = PAGE_INFO.myorderPageTemplate.myOrderPBarTemplate({});
-            $$('[data-page="myorder"] div#myorder-tab4').html(html); // 접수/요금
-            myApp.showTab('#myorder-tab4');
-            PAGE_INFO.myorderPagePollingTimer = 0;
-            PAGE_INFO.myorderPagePolling = myReceivePollymer({ in_receive_num: CUST_INFO.myReceiveNew.f_num }, function(data) {
-                PAGE_INFO.myorderPagePollingTimer += PAGE_INFO.myorderPagePollingInterval;
-                if(PAGE_INFO.myorderPagePollingTimer > 60 || data.f_status == '요금산정') {
-                    if(PAGE_INFO.myorderPagePolling) PAGE_INFO.myorderPagePolling.stop();
-                    var html = data.f_status == '요금산정'
-                        ? PAGE_INFO.myorderPageTemplate.myOrder4Template(data)
-                        : PAGE_INFO.myorderPageTemplate.myOrderTimeoutTemplate({});
-                    $$('[data-page="myorder"] div#myorder-tab4').html(html); // 접수/요금
-                    myApp.showTab('#myorder-tab4'); // 아니면 강제 탭 이동으로...,
-                }
-            });
+            if(PAGE_INFO.myorderPageInfo.in_site_type_gbn == 'BD') {
+                var html = PAGE_INFO.myorderPageTemplate.myOrderSubalTemplate({});
+                $$('[data-page="myorder"] div#myorder-tab4').html(html); // 접수/요금
+                myApp.showTab('#myorder-tab4');
+            } else {
+                var html = PAGE_INFO.myorderPageTemplate.myOrderPBarTemplate({});
+                $$('[data-page="myorder"] div#myorder-tab4').html(html); // 접수/요금
+                myApp.showTab('#myorder-tab4');
+                PAGE_INFO.myorderPagePollingTimer = 0;
+                PAGE_INFO.myorderPagePolling = myReceivePollymer({ in_receive_num: CUST_INFO.myReceiveNew.f_num }, function(data) {
+                    PAGE_INFO.myorderPagePollingTimer += PAGE_INFO.myorderPagePollingInterval;
+                    if(PAGE_INFO.myorderPagePollingTimer > 60 || data.f_status == '요금산정') {
+                        if(PAGE_INFO.myorderPagePolling) PAGE_INFO.myorderPagePolling.stop();
+                        var html = data.f_status == '요금산정'
+                            ? PAGE_INFO.myorderPageTemplate.myOrder4Template(data)
+                            : PAGE_INFO.myorderPageTemplate.myOrderTimeoutTemplate({});
+                        $$('[data-page="myorder"] div#myorder-tab4').html(html); // 접수/요금
+                        myApp.showTab('#myorder-tab4'); // 아니면 강제 탭 이동으로...,
+                    }
+                });                
+            }
         });
     });
 });
