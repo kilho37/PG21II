@@ -79,7 +79,12 @@
           <li class="item-content">
             <div class="item-inner">
               <div class="item-title label">배송업무</div>
-              <div class="item-detail">{{defaultString f_site_type_func_name}}</div>
+              <div class="item-detail">
+                {{defaultString f_site_type_func_name}}
+                {{#ifSubal this}}
+                  - {{defaultString f_doc_subal_gbn}}{{#ifEqual f_doc_subal_gbn '우편'}} / {{f_doc_subal_gbn_sub}}{{/ifEqual}}
+                {{/ifSubal}}
+              </div>
             </div>
           </li>
           <li class="item-content">
@@ -88,6 +93,14 @@
               <div class="item-detail">{{formatDateTime f_receive_dttm}}</div>
             </div>
           </li>
+          {{#if f_reserve_dttm}}
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">예약일자</div>
+              <div class="item-detail">{{formatDateTime f_reserve_dttm}}</div>
+            </div>
+          </li>
+          {{/if}}
           <li class="item-content">
             <div class="item-inner">
               <div class="item-title label">상태</div>
