@@ -44,7 +44,13 @@
             <div class="item-inner">
               <div class="item-title-row">
                 <div class="item-title">{{formatDateTime f_receive_dttm}}</div>
-                <div class="item-after">{{defaultString f_car_type}} / {{formatCommas f_fare_total}} 원</div>
+                <div class="item-after">
+                  {{#ifSiteType this}}
+                    {{defaultString f_car_type}} / {{formatCommas f_fare_total}} 원
+                  {{else}}
+                    {{defaultString f_site_type_func_name}}
+                  {{/ifSiteType}}
+                </div>
               </div>
               <div class="item-text" style="max-height: none;">
                 <div>출발지 : {{defaultString f_start_dong}} {{#if f_start_name}}/ {{defaultString f_start_name}}{{/if}}</div>
@@ -88,14 +94,17 @@
               <div class="item-detail">{{defaultString f_status}}</div>
             </div>
           </li>
+          {{#ifSiteType this}}
           <li class="item-content">
             <div class="item-inner">
               <div class="item-title label">차량/운행</div>
               <div class="item-detail">{{defaultString f_car_type}} / {{defaultString f_shuttle_type}}</div>
             </div>
           </li>
+          {{/ifSiteType}}
         </ul>
       </div>
+      {{#ifSiteType this}}
       <div class="list-group"><!--요금정보-->
         <ul>
           <li class="list-group-title">요금정보</li>
@@ -123,6 +132,7 @@
           </li>
         </ul>
       </div>
+      {{/ifSiteType}}
       <div class="list-group"><!--출발지-->
         <ul>
           <li class="list-group-title">출발지</li>
