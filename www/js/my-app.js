@@ -145,6 +145,9 @@ var myApp = new Framework7({
 var mainView = myApp.addView('.view-main', {
 });
 var $$ = Dom7;
+Template7.registerHelper('formatPhoneKR', function(value, mode) {
+    return formatPhoneKR(value, mode); // check & format
+});
 Template7.registerHelper('formatDate', function(value) {
     if(!value) return defaultString(value);
     return defaultString(value.slice(0, 4)) + '-' + defaultString(value.slice(4, 6)) + '-' + defaultString(value.slice(6, 8));
@@ -177,10 +180,10 @@ Template7.registerHelper('formatCarType', function(context) {
     var rvalue = '';
     if(!isObject(context)) return rvalue;
     if('f_car_type' in context) {
-        var in_car_type = context.f_car_type.trim(),
-            in_type1 = context.f_car_sub_type1.trim(),
-            in_type2= context.f_car_sub_type2.trim(),
-            in_fix_yn = context.f_car_type_fix_yn.trim();
+        var in_car_type = defaultString(context.f_car_type),
+            in_type1 = defaultString(context.f_car_sub_type1),
+            in_type2= defaultString(context.f_car_sub_type2),
+            in_fix_yn = defaultString(context.f_car_type_fix_yn);
         if(in_car_type == '밴') {
             if(in_type1.length > 0 && in_type1 != '미정') {
                 rvalue += '차종:' + in_type1;
@@ -221,12 +224,12 @@ Template7.registerHelper('ifNull', function(value1, value2, options) {
     return defaultString(value1);
 });
 Template7.registerHelper('ifContact', function(value1, value2, options) {
-    value1 = defaultString(value1).trim();
-    value2 = defaultString(value2).trim();
+    value1 = defaultString(value1); // tel
+    value2 = defaultString(value2); // hphone
     if(value1 == value2 || value1.length > value2.length) {
-        return value1;
+        return formatPhoneKR(value1, 'tel'); // check & format
     }
-    return value2;
+    return formatPhoneKR(value2, 'hphone'); // check & format
 });
 Template7.registerHelper('ifOdd', function(value, options) {
     if(value % 2) {
@@ -236,7 +239,7 @@ Template7.registerHelper('ifOdd', function(value, options) {
     }
 });
 Template7.registerHelper('ifEqual', function(value1, value2, options) {
-    if(value1 === value2) {
+    if(value1 == value2) {
         return options.fn(this, options.data);
     } else {
         return options.inverse(this, options.data);
@@ -475,6 +478,22 @@ $$(document).on('click', '[data-page="myorder"] a[id="custtab1_favnew"], [data-p
         myApp.modal({
             title: PAGE_INFO.myorderPageInfo.pageTitle,
             text: '해당 ' + params.title[invalid_key] + ' 항목은 <b style="color: red;">필수항목</b> 입니다.',
+            buttons: [{ text: 'OK', onClick: function() {} }]
+        });
+        return false;
+    }
+    // 검수 #2 => 전화번호/휴대폰 값이 있으면 체크
+    invalid_key = [
+        defaultString(params['in_tel']).length > 0 ? 'tel': '',
+        defaultString(params['in_hphone']).length > 0 ? 'hphone': ''
+    ].find(function(key) {
+        if(!key) return false;
+        return !isCheckKR(params['in_' + key], key);
+    });
+    if(invalid_key !== undefined) {
+        myApp.modal({
+            title: PAGE_INFO.myorderPageInfo.pageTitle,
+            text: '해당 ' + params.title['in_' + invalid_key] + ' 항목의 값이 바르지 않습니다.',
             buttons: [{ text: 'OK', onClick: function() {} }]
         });
         return false;
@@ -754,6 +773,22 @@ $$(document).on('click', '[data-page="myorder"] a[id="custnew"]', function() {
         myApp.modal({
             title: PAGE_INFO.myorderPageInfo.pageTitle,
             text: '해당 ' + params.title[invalid_key] + ' 항목은 <b style="color: red;">필수항목</b> 입니다.',
+            buttons: [{ text: 'OK', onClick: function() {} }]
+        });
+        return false;
+    }
+    // 3차 검수 #2 => 전화번호/휴대폰 값이 있으면 체크
+    invalid_key = [
+        defaultString(params['in_tel']).length > 0 ? 'tel': '',
+        defaultString(params['in_hphone']).length > 0 ? 'hphone': ''
+    ].find(function(key) {
+        if(!key) return false;
+        return !isCheckKR(params['in_' + key], key);
+    });
+    if(invalid_key !== undefined) {
+        myApp.modal({
+            title: PAGE_INFO.myorderPageInfo.pageTitle,
+            text: '해당 ' + params.title['in_' + invalid_key] + ' 항목의 값이 바르지 않습니다.',
             buttons: [{ text: 'OK', onClick: function() {} }]
         });
         return false;
@@ -1063,10 +1098,12 @@ $$(document).on('click', '[data-page="mylist"] li .item-content', function() {
         in_cust_num: CUST_INFO.itemData.f_num,
         in_receive_num: rnum
      }, function(data) {
+        rdata['in_cust_num'] = CUST_INFO.itemData.f_num;
         rdata['PASS'] = [];
         if($$.isArray(data)) {
             data.forEach(function(row) {
                 var obj = {
+                    f_cust_num: row.f_cust_num,
                     f_cust_name: row.f_cust_name,
                     f_tel: row.f_tel,
                     f_sido: row.f_sido,
@@ -1147,6 +1184,26 @@ function getMyFavorites(params, pullToRefresh) {
         if(pullToRefresh) myApp.pullToRefreshDone();
     }
 }
+
+// 내거래처 삭제
+$$(document).on('click', '[data-page="myfavorites"] .swipeout-actions-right a[id="custfav_delete"]', function() {
+    var rnum = $$(this).data('rnum');
+    console.log(rnum);
+    myApp.confirm('내거래처를 삭제하시겠습니까?', function() {
+        // delete
+        getJSON('myFavoriteDelete', Object.assign({
+            in_cust_num: CUST_INFO.itemData.f_num,
+            in_num: rnum
+        }, PAGE_INFO.myfavoritesPageParams), function(data) {
+            myApp.alert('내거래처를 삭제하였습니다.', function() {
+                getMyFavorites(getMyFavoritesParams(PAGE_INFO.myfavoritesPageParams), false);
+            });
+        });
+    }, function() {
+        // Cancel
+    });
+});
+
 
 // 상세보기 data-page="myfavorites"
 $$(document).on('click', '[data-page="myfavorites"] li .item-content', function() {
@@ -1252,10 +1309,51 @@ $$(document).on('click', '.popup-myfavorite-detail .toolbar-bottom a.link', func
     } else if(idx === 2) {
         // 확인
         var rnum = $$('.popup-myfavorite-detail div.my-favorite-num').data('rnum');
-        var params = {}
+        var params = {
+            title: {}
+        }
         myfavorites.each(function() {
-            params['in_' + this.name.slice(7)] = this.value;
+            var el = $$(this),
+                title = el.parent().prev().text(),
+                required = el.hasClass('item-required');
+            var name = this.name.slice(7);
+            var key = 'in_' + name;
+            var category = '내거래처';
+            params[key] = this.value;
+            if(required) {
+                params.title[key] = '[' + category + '] 의 ' + ' <b style="color: red;">' + title + '</b>';
+            }
         });
+        // 검수
+        var invalid_key = Object.keys(params).find(function(key) {
+            return params.title[key] !== undefined && params[key].trim().length < 1;
+        });
+        if(invalid_key !== undefined) {
+            myApp.modal({
+                title: PAGE_INFO.myorderPageInfo.pageTitle,
+                text: '해당 ' + params.title[invalid_key] + ' 항목은 <b style="color: red;">필수항목</b> 입니다.',
+                buttons: [{ text: 'OK', onClick: function() {} }]
+            });
+            return false;
+        }
+        // 검수 #2 => 전화번호/휴대폰 값이 있으면 체크
+        invalid_key = [
+            defaultString(params['in_tel']).length > 0 ? 'tel': '',
+            defaultString(params['in_hphone']).length > 0 ? 'hphone': ''
+        ].find(function(key) {
+            if(!key) return false;
+            return !isCheckKR(params['in_' + key], key);
+        });
+        if(invalid_key !== undefined) {
+            myApp.modal({
+                title: PAGE_INFO.myorderPageInfo.pageTitle,
+                text: '해당 ' + params.title['in_' + invalid_key] + ' 항목의 값이 바르지 않습니다.',
+                buttons: [{ text: 'OK', onClick: function() {} }]
+            });
+            return false;
+        }
+        delete params.title;
+        // save
         if(!rnum) {
             myApp.confirm('내거래처를 등록하시겠습니까?', function() {
                 // new
@@ -1267,7 +1365,7 @@ $$(document).on('click', '.popup-myfavorite-detail .toolbar-bottom a.link', func
                             myApp.closeModal(popup);
                             $$('.popup-overlay').removeClass('modal-overlay-visible');
                             // reload
-                            getMyFavorites(getMyFavoritesParams(PAGE_INFO.myfavoritesPageParams), false);
+                            getMyFavorites(getMyFavoritesParams({}), false);
                         }
                     });
                 });
@@ -1346,6 +1444,7 @@ myApp.onPageInit('myinfo', function(page) {
         $$('[data-page="myinfo"] .toolbar-bottom a.link').eq(2).text('가입');
         // new myinfo
         $$('[data-page="myinfo"] .page-myinfo-template-content').html(html);
+        $$('[data-page="myinfo"] a[id="custidused"]').show(); // 중복확인
     // 내정보
     } else {
         // get myinfo
@@ -1353,6 +1452,7 @@ myApp.onPageInit('myinfo', function(page) {
             html = PAGE_INFO.myinfoPageTemplate.myInfoTemplate(CUST_INFO.itemData);
         }
         $$('[data-page="myinfo"] .page-myinfo-template-content').html(html);
+        $$('[data-page="myinfo"] a[id="custidused"]').hide(); // 중복확인
     }
     /*if(PAGE_INFO.myinfoPageInfo.info_gbn == '') {
         // group num search
@@ -2094,7 +2194,7 @@ function getFavoriteAutoComplete(params) {
                                 favorite.f_name ? favorite.f_name + (favorite.f_person_name ? ' / ' + favorite.f_person_name : '') : defaultString(favorite.f_person_name),
                                 favorite.f_depart_name,
                                 defaultString(favorite.f_contact),
-                                defaultString(favorite.f_full_addr).trim() + ' ' + defaultString(favorite.f_dong_num).trim()
+                                defaultString(favorite.f_full_addr) + ' ' + defaultString(favorite.f_dong_num)
                             ].join('<br>');
                             results.push(favorite);
                         });
@@ -2180,7 +2280,7 @@ function getNameAutoComplete(params) {
                                 name.f_name ? name.f_name + (name.f_person_name ? ' / ' + name.f_person_name : '') : defaultString(name.f_person_name),
                                 name.f_depart_name,
                                 defaultString(name.f_contact),
-                                defaultString(name.f_full_addr).trim() + ' ' + defaultString(name.f_dong_num).trim()
+                                defaultString(name.f_full_addr) + ' ' + defaultString(name.f_dong_num)
                             ].join('<br>');
                             results.push(name);
                         });
@@ -2442,7 +2542,7 @@ function getOptions(in_gbn, in_sub_gbn, in_added_option) {
 }
 
 function defaultString(data, defaultValue) {
-  return (!data) ? ((!defaultValue) ? '' : defaultValue) : data;
+  return (!data) ? ((!defaultValue) ? '' : defaultValue.trim()) : data.trim();
 }
 
 // 직접통화 
@@ -2485,7 +2585,34 @@ function isArray(data) {
 
 function isEmail(data) {
     var emailMatchRx = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    return emailMatchRx.test(data.trim());
+    return emailMatchRx.test(defaultString(data));
+}
+
+// KR - Phone Number & Etc Format Test
+function isCheckKR(data, mode) {
+    data = defaultString(data);
+    var checkMatchRx = 
+        mode == 'number'    ? /^[0-9]+$/ :
+        // KR Style
+        mode == 'tel'       ? /^(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]))-?(\d{3,4})-?(\d{4})$/ : /* /^\d{2,3}-?\d{3,4}-?\d{4}$/ */
+        mode == 'hphone'    ? /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/ : /* /^\d{3}-\d{3,4}-\d{4}$/ */
+        /^.*$/;
+    if(mode == 'tel' || mode == 'hphone') {
+        data = data.replace(/[^\/\d]/g,'');
+    }
+    return checkMatchRx.test(data);
+}
+
+// KR - Phone Number Format
+function formatPhoneKR(data, mode /* check & format */) {
+    data = defaultString(data);
+    if(mode == 'tel' || mode == 'hphone') {
+        if(!isCheckKR(data, mode)) {
+            return data;
+        }
+    }
+    var phoneMatchRx = /(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/;
+    return data.replace(phoneMatchRx, "$1-$2-$3");
 }
 
 function getCommon(in_gbn, in_sub_gbn, successCallback) {
