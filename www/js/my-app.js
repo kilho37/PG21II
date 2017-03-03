@@ -252,7 +252,13 @@ Template7.registerHelper('formatStatus', function(status, options) {
         status == '취소' ? 2 : 
         status == '종료' ? 3 : 0 
     ];
-    return '<p style="color: ' + color + ';">' + status + '</p>'
+    return '<p style="color: ' + color + ';">' + status + '</p>';
+});
+Template7.registerHelper('formatRecieveSubal', function(context, options) {
+    if(isObject(context)) {
+        return context.f_doc_subal_gbn + (context.f_doc_subal_gbn == '우편' ? ' / ' + context.f_doc_subal_gbn_sub : '');
+    }
+    return '';
 });
 
 // actions events
@@ -820,7 +826,7 @@ $$(document).on('click', '[data-page="myorder"] a[id="custnew"]', function() {
         myApp.alert('의뢰하신 배송정보로 신청되었습니다.', function() {
             $$('[data-page="myorder"] a[id="custnew"]').parent().empty(); // 배송신청 버튼 DOM 삭제
             if(PAGE_INFO.myorderPageInfo.in_site_type_gbn == 'BD') {
-                var html = PAGE_INFO.myorderPageTemplate.myOrderSubalTemplate({});
+                var html = PAGE_INFO.myorderPageTemplate.myOrderSubalTemplate(CUST_INFO.myReceiveNew);
                 $$('[data-page="myorder"] div#myorder-tab4').html(html); // 접수/요금
                 myApp.showTab('#myorder-tab4');
             } else {
@@ -1188,7 +1194,6 @@ function getMyFavorites(params, pullToRefresh) {
 // 내거래처 삭제
 $$(document).on('click', '[data-page="myfavorites"] .swipeout-actions-right a[id="custfav_delete"]', function() {
     var rnum = $$(this).data('rnum');
-    console.log(rnum);
     myApp.confirm('내거래처를 삭제하시겠습니까?', function() {
         // delete
         getJSON('myFavoriteDelete', Object.assign({
