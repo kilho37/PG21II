@@ -137,15 +137,46 @@
             </div>
           </li>
           {{/if}}
+          {{#ifEqual f_status '취소'}}
+            <!--같으면 숨김-->
+          {{else}}
           <li class="item-content">
             <div class="item-inner">
               <div class="item-title label">합계금액</div>
               <div class="item-detail">{{formatCommas f_fare_total}} 원</div>
             </div>
           </li>
+          {{/ifEqual}}
         </ul>
       </div>
       {{/ifSiteType}}
+      {{#ifEqual in_cust_num CLIENT.f_cust_num}}
+        <!--같으면 숨김-->
+      {{else}}
+      <div class="list-group"><!--의뢰자-->
+        <ul>
+          <li class="list-group-title">의뢰자</li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">고객명</div>
+              <div class="item-detail">{{defaultString CLIENT.f_cust_name}}</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">전화번호</div>
+              <div class="item-detail">{{ifContact CLIENT.f_tel CLIENT.f_hphone}}</div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">주소</div>
+              <div class="item-detail">{{formatFullAddress CLIENT}}</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      {{/ifEqual}}
       <div class="list-group"><!--출발지-->
         <ul>
           <li class="list-group-title">출발지</li>
@@ -212,7 +243,10 @@
         </ul>
       </div>
       {{/if}}
-      {{#if this.PASS}}
+      {{#ifEqual f_status '취소'}}
+        <!--같으면 숨김-->
+      {{else}}
+        {{#if this.PASS}}
       <div class="list-group"><!--경유지-->
         <ul>
           <li class="list-group-title">경유지</li>
@@ -238,18 +272,12 @@
           {{/each}}
         </ul>
       </div>
-      {{/if}}
-      {{#ifSiteType this}}
-        {{#if f_driver_num}}
+        {{/if}}
+        {{#ifSiteType this}}
+          {{#if f_driver_num}}
       <div class="list-group"><!--기사정보-->
         <ul>
           <li class="list-group-title">기사정보</li>
-          <li class="item-content">
-            <div class="item-inner">
-              <div class="item-title label">기사번호</div>
-              <div class="item-detail">{{defaultString f_driver_num}}</div>
-            </div>
-          </li>
           <li class="item-content">
             <div class="item-inner">
               <div class="item-title label">기사명</div>
@@ -259,7 +287,7 @@
           <li class="item-content">
             <div class="item-inner">
               <div class="item-title label">휴대전화</div>
-              <div class="item-detail">{{defaultString f_driver_hphone}}</div>
+              <div class="item-detail">{{formatPhoneKR f_driver_hphone 'hphone'}}</div>
             </div>
           </li>
           <li class="item-content">
@@ -270,8 +298,9 @@
           </li>
         </ul>
       </div>
-        {{/if}}
-      {{/ifSiteType}}
+          {{/if}}
+        {{/ifSiteType}}
+      {{/ifEqual}}
     </div>
   </script>
 </div>
