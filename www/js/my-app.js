@@ -1330,7 +1330,7 @@ $$(document).on('click', '.popup-myfavorite-detail .toolbar-bottom a.link', func
         });
         if(invalid_key !== undefined) {
             myApp.modal({
-                title: PAGE_INFO.myorderPageInfo.pageTitle,
+                title: '내거래처' + (!rnum ? ' - 신규' : ''),
                 text: '해당 ' + params.title[invalid_key] + ' 항목은 <b style="color: red;">필수항목</b> 입니다.',
                 buttons: [{ text: 'OK', onClick: function() {} }]
             });
@@ -1346,7 +1346,7 @@ $$(document).on('click', '.popup-myfavorite-detail .toolbar-bottom a.link', func
         });
         if(invalid_key !== undefined) {
             myApp.modal({
-                title: PAGE_INFO.myorderPageInfo.pageTitle,
+                title: '내거래처' + (!rnum ? ' - 신규' : ''),
                 text: '해당 ' + params.title['in_' + invalid_key] + ' 항목의 값이 바르지 않습니다.',
                 buttons: [{ text: 'OK', onClick: function() {} }]
             });
